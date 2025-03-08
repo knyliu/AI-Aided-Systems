@@ -32,7 +32,7 @@ async def process_chunk(chunk, start_idx, total_records, model_client, terminati
         f"以下為該批次資料:\n{chunk_data}\n\n"
         "請根據以上資料進行分析，並提供完整的寶寶照護建議。"
         "其中請特別注意：\n"
-        "  1. 分析寶寶的日常行為與照護需求；\n"。
+        "  1. 分析寶寶的日常行為與照護需求；\n"
         "  2. 請 MultimodalWebSurfer 搜尋外部網站，找出最新的寶寶照護建議資訊（例如餵食、睡眠、尿布更換等），\n"
         "     並將搜尋結果整合進回覆中；\n"
         "  3. 最後請提供具體的建議和相關參考資訊。\n"

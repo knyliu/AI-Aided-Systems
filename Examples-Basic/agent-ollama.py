@@ -8,16 +8,7 @@ from autogen_ext.models.openai import OpenAIChatCompletionClient
 load_dotenv()
 
 async def main():
-    # 從環境變數中讀取金鑰
-    api_key = os.environ.get("GEMINI_API_KEY")
-    """
-    model_client = OpenAIChatCompletionClient(
-        model="gemini-1.5-flash-8b",
-        api_key=api_key,
-    )
-    """
-    
-
+ 
     model_client = OpenAIChatCompletionClient(
         model="llama3.2:latest",
         base_url="http://localhost:11434/v1",

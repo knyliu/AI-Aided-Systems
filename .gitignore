@@ -133,6 +133,7 @@ celerybeat.pid
 env/
 venv/
 ENV/
+AAAEnv/
 env.bak/
 venv.bak/
 
@@ -170,3 +171,14 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
+# data
+clusterAnalysis/
+clustered_csv/
+clusterSummary/
+epochComparison/
+output_csv/
+personalInfo/
+data_encoded.csv
+data.csv
+encoding_map.json
+.env
