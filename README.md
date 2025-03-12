@@ -12,6 +12,24 @@ Below is the system framework diagram.
 
 ![System Framework](src-README/framework.png)
 
+**Execution Flow and Output Files Table** 
+
+| **Step** | **Script Name** | **Output Directory** | **Example Output File** | **Content & Meaning** |
+|----------|---------------|----------------------|-------------------------|-----------------------|
+| **1. Re-encoding (Optional)** | `reEncode.py` | Root Directory | `data_encoded.csv` | Re-encodes `Hash`, `From`, and `To` to reduce LLM token load. | 
+| | | | `encoding_map.json` | Stores the mapping of original values to encoded IDs, e.g., `H0`, `F1`, `T2`. |
+| **2. Converting to Depth/Epoch** | `dataTransferringAgent.py` | `output_csv/` | `Depth_1_Epoch_1.csv` | Splits `data.csv` based on `(Depth, Epoch)`. | 
+| | | | `Depth_2_Epoch_3.csv` | Each file represents transactions for a specific `(Depth, Epoch)`. |
+| **3. Further Clustering by Cluster** | `toClustered.py` | `clustered_csv/` | `Depth_1_Epoch_1_Cluster_0.csv` | Further splits transactions based on `Cluster_Value`. | 
+| | | | `Depth_2_Epoch_3_Cluster_1.csv` | Each file contains transactions for a specific `(Depth, Epoch, Cluster)`. |
+| **4. Generating Individual Cluster Summaries** | `clusterSummary.py` | `clusterSummary/` | `summary_Depth_1_Epoch_1_Cluster_0.txt` | LLM-generated description of transaction characteristics within the `Cluster`. | 
+| | | | `summary_Depth_2_Epoch_3_Cluster_1.txt` | Analyzes the transaction patterns within the `Cluster`. |
+| **5. Comparing Clusters within the Same Depth & Epoch** | `clusterChecker.py` | `clusterAnalysis/` | `analysis_Depth_1_Epoch_1.txt` | LLM comparison of all `Clusters` within the same `Epoch`. | 
+| | | | `analysis_Depth_2_Epoch_3.txt` | Identifies why transactions were grouped into separate `Clusters` and their differences. |
+| **6. Generating Epoch Summary (Comparing Epochs within the Same Depth)** | `epochComparison.py` | `epochSummary/` | `summary_Depth_1.txt` | LLM comparison of **different `Epochs` within the same `Depth`**. | 
+| | | | `summary_Depth_2.txt` | Identifies trends and changes between `Epochs`. |
+| **7. Generating Depth Summary (Comparing Across Depths)** | `depthComparison.py` | `depthComparison/` | `final_summary.txt` | LLM comparison of **different `Depths`** in transaction patterns. | 
+
 ## 1. Overview
 
 1. **Clustered Data from Quantum Model**  
