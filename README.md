@@ -30,6 +30,13 @@ Below is the system framework diagram.
 | | | | `summary_Depth_2.txt` | Identifies trends and changes between `Epochs`. |
 | **7. Generating Depth Summary (Comparing Across Depths)** | `depthComparison.py` | `depthComparison/` | `final_summary.txt` | LLM comparison of **different `Depths`** in transaction patterns. | 
 
+| **Step**                  | **What LLM Does** |
+|---------------------------|------------------|
+| **1. Cluster Summary** (`clusterSummary.py`) | Define each cluster's characteristics. Why is this group unique? |
+| **2. Cluster Comparison** (`clusterChecker.py`) | Compare clusters within the same `(Depth, Epoch)`. Why were they split? |
+| **3. Epoch Comparison** (`epochComparison.py`) | Compare epochs within a depth. How do clusters evolve over time? |
+| **4. Depth Comparison** (`depthComparison.py`) | Compare different depths. How does clustering change across blockchain layers? |
+
 ## 1. Overview
 
 1. **Clustered Data from Quantum Model**  
