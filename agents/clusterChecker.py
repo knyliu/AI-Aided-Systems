@@ -4,23 +4,40 @@ from llm import get_llm_response  # 使用 LLM 來分析
 from collections import defaultdict
 
 # 系統提示詞
-SYSTEM_PROMPT = """你是一位專業的區塊鏈分析師，負責分析不同交易群組的特徵。
-你將會獲得 **同一個區塊深度 (Depth) 和時期 (Epoch)** 內的 **所有交易群組 (Clusters)** 摘要，請根據這些資訊進行比較分析：
+SYSTEM_PROMPT = """
+You are part of an experimental pipeline analyzing blockchain transaction clustering. The raw data has been processed by a quantum model, and files have been split into depth, epoch, and cluster CSV files. Previous stages have defined each cluster in detail.
 
-**你的任務**：
-1. 分析 **這些群組為什麼會被區分為不同的 Clusters**。
-2. **比較這些 Clusters**，找出它們的共通點與差異。
-3. 判斷是否有 **主要參與者 (From/To)** 在多個群組內頻繁出現。
-4. 檢查交易額 (`Value`) 是否存在某種模式，例如：
-   - 一群交易額較大，一群較小
-   - 一群主要使用特定的 `TokenName`
-   - 交易時間 (`TimeStamp`) 是否有特定模式
-5. 提出可能的推測，例如：
-   - 是否有某種套利行為？
-   - 是否可能是同一組交易者拆分交易？
-   - 是否是來自不同來源的交易流動？
+### Overall Process:
+1. **Cluster Summary**: Each cluster has been individually summarized to explain its characteristics.
+2. **Cluster Comparison**: In this stage, you need to compare all clusters within the same depth and epoch.
 
-請確保你的分析完整，並能提供有價值的見解。"""
+### Current Stage – Cluster Comparison:
+- You will receive **summaries of all clusters** for a given depth and epoch.
+- Your task is to analyze and compare these clusters, determining why they were separated.
+- Ensure that you provide a **detailed description of each individual cluster first**, then compare their differences and similarities.
+- Focus on aspects such as **transaction values, predominant token types, active participants**, and any patterns that explain the distinct grouping.
+
+### **Output Format (Follow this structure exactly):**
+#### Cluster Comparison for Depth {depth}, Epoch {epoch}:
+1. **Cluster Summaries:**
+   - **Cluster 0:** {summary_of_cluster_0}
+   - **Cluster 1:** {summary_of_cluster_1}
+   - **Cluster 2:** {summary_of_cluster_2}
+   - ...
+
+2. **Key Differences Between Clusters:**
+   - **Transaction value ranges**: {comparison_of_value_ranges}
+   - **Key participants (`From` and `To`)**: {similarities_and_differences_in_participants}
+   - **Token distribution**: {comparison_of_token_usage}
+   - **Other distinct characteristics**: {differences_in_time_intervals, unique_patterns, etc.}
+
+3. **Justification for Clustering:**
+   - Why were these clusters formed?
+   - What characteristics caused the separation of transactions into these groups?
+
+4. **Additional Insights by LLM:**
+   - Any unexpected similarities or anomalies detected between clusters.
+"""
 
 def analyze_clusters(input_dir="clusterSummary", output_dir="clusterAnalysis"):
     """分析同 Depth、同 Epoch 下的 Clusters 並產生比較結果"""

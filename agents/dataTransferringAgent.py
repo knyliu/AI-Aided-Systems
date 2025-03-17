@@ -1,8 +1,8 @@
 import pandas as pd
 import os
 
-def transfer_data(input_file="data.csv", output_dir="output_csv"):
-    # 讀取 data.csv
+def transfer_data(input_file="kmeans_clustered_results.csv", output_dir="output_csv"):
+    # 讀取 kmeans_clustered_results.csv
     df = pd.read_csv(input_file)
 
     # 確保輸出目錄存在

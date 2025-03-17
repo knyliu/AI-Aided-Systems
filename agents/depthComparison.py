@@ -3,30 +3,46 @@ import glob
 from llm import get_llm_response  # 使用 LLM 來分析
 
 # 系統提示詞
-SYSTEM_PROMPT = """你是一位專業的區塊鏈分析師，負責研究不同區塊深度 (Depth) 下的分群策略。
-你將會獲得 **所有不同 Depths 的總結報告**，請根據這些資訊進行整體比較分析：
+SYSTEM_PROMPT = """
+You are part of an experimental pipeline analyzing blockchain transaction clustering. The raw data has been processed into CSV files by depth, epoch, and cluster, and previous stages have produced detailed summaries at the cluster level, compared clusters within the same epoch, and compared epochs within the same depth.
 
-⚡ **你的任務**：
-1. **比較不同 Depths 的分群策略是否一致？**
-   - 深度較大的區塊是否與較淺的區塊有不同的交易行為？
-   - 是否有某些 `Depth` 的交易更集中，而某些 `Depth` 的交易較為分散？
-   - `Clusters` 的數量是否隨 `Depth` 改變？
-   
-2. **發現隨 Depth 變化的關鍵因素**
-   - `TokenName` 是否在不同 `Depth` 下有不同的分佈？
-   - 交易額 (`Value`) 是否隨 `Depth` 變化？
-   - 是否有某些 `From` 或 `To` 參與者僅在特定 `Depth` 出現？
+### Overall Process:
+1. **Cluster Summary**: Define each cluster.
+2. **Cluster Comparison**: Compare clusters within the same depth and epoch.
+3. **Epoch Comparison**: Compare different epochs within the same depth.
+4. **Depth Comparison**: Now, you must compare the clustering strategies across different depths.
 
-3. **推測不同 Depths 為何產生這些差異**
-   - 是否可能與區塊鏈共識機制、手續費、或者區塊大小有關？
-   - 是否某些 Depth 反映了歷史時間內交易行為的變遷？
-   - 是否某些交易策略（如套利）在某些 `Depth` 內特別明顯？
+### Current Stage – Depth Comparison:
+- You will receive **summaries for all depths**.
+- Your task is to analyze how clustering behavior varies as depth changes.
+- Ensure that you **provide a comprehensive description of each depth individually** before making any comparisons.
+- Focus on identifying trends in transaction patterns, **variations in cluster structure, differences in key participants, and any changes in transaction values or token types that vary with blockchain depth**.
 
-🔍 **請確保你的分析完整，並提供對整體交易模式的深入見解。**
+### **Output Format (Follow this structure exactly):**
+#### Depth Comparison Summary:
+1. **Depth Summaries:**
+   - **Depth 1:**
+     - **Number of epochs**: {number_of_epochs}
+     - **General clustering approach**: {how_clusters_were_formed}
+     - **Common transaction behaviors**: {key_patterns}
+     - **Most frequent tokens used**: {token_distribution}
+   - **Depth 2:** {same_structure}
+   - **Depth 3:** {same_structure}
+   - ...
 
----
+2. **Comparing Depths:**
+   - **How do clustering strategies evolve as depth increases?**
+   - **Does transaction behavior become more complex or simplified?**
+   - **What similarities exist across different depths?**
+   - **Are certain participants or tokens more dominant in deeper or shallower depths?**
+   - **Are transaction values significantly different between depths?**
 
-### **所有不同 Depths 的比較分析**
+3. **Conclusion:**
+   - What are the overarching trends across all depths?
+   - What could explain the shifts in clustering behavior as depth changes?
+
+4. **Additional Insights by LLM:**
+   - Any unexpected relationships or irregularities across depths.
 """
 
 def compare_depths(input_dir="epochSummary", output_dir="depthComparison"):

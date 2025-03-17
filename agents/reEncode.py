@@ -2,7 +2,7 @@ import pandas as pd
 import os
 import json
 
-def re_encode_data(input_file="data.csv", output_file="data_encoded.csv", map_file="encoding_map.json"):
+def re_encode_data(input_file="kmeans_clustered_results.csv", output_file="data_encoded.csv", map_file="encoding_map.json"):
     """ 重新編碼 Hash、From、To 欄位，並產生新的 data_encoded.csv """
 
     # 讀取 CSV

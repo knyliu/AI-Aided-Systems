@@ -4,32 +4,47 @@ from llm import get_llm_response  # 使用 LLM 來分析
 from collections import defaultdict
 
 # 系統提示詞
-SYSTEM_PROMPT = """你是一位專業的區塊鏈分析師，負責研究區塊鏈交易的分群趨勢。
-你將會獲得 **同一個區塊深度 (Depth)** 內的 **不同 Epochs 的交易群組分析結果**，請根據這些資訊進行綜合分析：
+SYSTEM_PROMPT = """
+You are part of an experimental pipeline analyzing blockchain transaction clustering. The raw data has been processed into CSV files by depth, epoch, and cluster, and each cluster has been defined and compared within the same depth and epoch.
 
-⚡ **你的任務**：
-1. **比較不同 Epochs 的群組結構是否相似？**
-   - 這些 Epoch 之間的交易行為是否趨於一致？
-   - 是否有某些 Epoch 有特別多或少的 Clusters？
-   - 是否有某些 Epoch 出現了全新的交易類型？
+### Overall Process:
+1. **Cluster Summary**: Each cluster has been defined.
+2. **Cluster Comparison**: Clusters within the same depth and epoch have been compared.
+3. **Epoch Comparison**: Now, you must compare the results across different epochs within the same depth.
 
-2. **找出該 Depth 下所有 Epoch 都有的共通性**
-   - 哪些 `From` 或 `To` 是該 Depth 的核心交易者？
-   - 哪些 `TokenName` 或 `TokenSymbol` 在所有 Epoch 都活躍？
-   - 交易額 (`Value`) 是否呈現某種固定範圍？
-   - 是否存在某些 Clusters 模式，在不同 Epochs 下重複出現？
+### Current Stage – Epoch Comparison:
+- You will receive **summaries for each epoch** within a specific depth, where each summary includes the **detailed analysis of the clusters in that epoch**.
+- Your task is to analyze how the clustering behavior changes from one epoch to another within the same depth.
+- Ensure that you fully **describe each epoch's summary first before drawing overall comparisons**.
+- Focus on identifying **similarities and differences in clustering strategies, common transaction features, and any evolution or shifts in transaction behavior across epochs**.
 
-3. **推測分群變化的可能原因**
-   - 是否可能是市場行情變動導致的？
-   - 是否某些時間點發生了事件導致交易模式改變？
-   - 是否某些交易策略（如套利）在某些 Epochs 下特別明顯？
+### **Output Format (Follow this structure exactly):**
+#### Epoch Comparison for Depth {depth}:
+1. **Epoch Summaries:**
+   - **Epoch 1:**
+     - **Number of clusters**: {number_of_clusters}
+     - **Primary clustering method**: {how_clusters_were_formed}
+     - **Common participants (`From` and `To`)**: {key_participants}
+     - **Most frequently used tokens**: {token_distribution}
+   - **Epoch 2:** {same_structure}
+   - **Epoch 3:** {same_structure}
+   - ...
 
-🔍 **請確保你的分析完整，並且能夠提供關於該 Depth 的關鍵見解，找出此深度內 Epochs 之間的異同點與共通特徵。**
+2. **Comparing Epochs within Depth {depth}:**
+   - **How has the clustering strategy evolved?**
+   - **Did the number of clusters increase or decrease?**
+   - **Are there any key participants present in every epoch?**
+   - **What common transaction behaviors persist across all epochs?**
+   - **What major differences exist between epochs?**
 
----
+3. **Conclusion:**
+   - What trends or patterns are observed within this depth?
+   - What might be causing these changes across epochs?
 
-### **Depth {depth} - 不同 Epochs 的分析結果：**
+4. **Additional Insights by LLM:**
+   - Any anomalies or unexpected clustering behaviors detected.
 """
+
 
 def summarize_depths(input_dir="clusterAnalysis", output_dir="epochSummary"):
     """分析同 Depth 下的不同 Epochs，並產生比較與共通點的總結"""
@@ -54,7 +69,8 @@ def summarize_depths(input_dir="clusterAnalysis", output_dir="epochSummary"):
 
     # 遍歷所有 Depth，讓 LLM 進行 Epochs 間的比較與共通性分析
     for depth, analyses in grouped_analyses.items():
-        combined_prompt = SYSTEM_PROMPT.format(depth=depth)
+        # combined_prompt = SYSTEM_PROMPT.format(depth=depth)
+        combined_prompt = SYSTEM_PROMPT
         combined_prompt += "\n".join(analyses)  # 將所有該 Depth 內的 Epochs 內容合併
 
         # 讓 LLM 產生比較分析

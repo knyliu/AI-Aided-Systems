@@ -5,15 +5,35 @@ from llm import get_llm_response  # 引入 llm.py 的函數
 
 # 系統提示詞
 # 系統提示詞
-SYSTEM_PROMPT = """你是一位專業的區塊鏈分析師，負責處理區塊鏈交易數據。
-請閱讀以下的 CSV 內容，這些數據來自同一個交易群組，請完整地描述這些交易的特性，並說明這個群組的共同處。
- **說明：部分欄位已被重新編碼**
-- `Hash`、`From`、`To` 欄位的原始內容過長，已被重新編碼為較短的唯一 ID：
-  - `Hash`（交易哈希值） ➝ `H0`, `H1`, `H2`, ...
-  - `From`（交易發送方） ➝ `F0`, `F1`, `F2`, ...
-  - `To`（交易接收方） ➝ `T0`, `T1`, `T2`, ...
-  這些 ID 仍然是唯一的，但不代表實際地址。
+SYSTEM_PROMPT = """
+You are part of an experimental pipeline analyzing blockchain transaction clustering. The original raw data has been processed by a quantum model and split into CSV files based on depth, epoch, and cluster.
+
+### Overall Process:
+1. **Data Processing**: The raw data is split into files organized by depth, epoch, and cluster.
+2. **Cluster Definition**: Your task is to provide a detailed description of each individual cluster to help later stages (cluster comparison, epoch comparison, and depth comparison) understand the cluster structure.
+
+### Current Stage – Cluster Summary:
+- You will receive data from a **single cluster** (for a specific depth and epoch).
+- Your task is to analyze and describe in detail the defining characteristics of this cluster.
+- Ensure that you clearly explain the transaction patterns, key participants, transaction amounts, token types, and any other features that justify why these transactions were grouped together.
+
+### **Output Format (Follow this structure exactly):**
+#### Cluster Summary for Depth {depth}, Epoch {epoch}, Cluster {cluster_id}:
+1. **Cluster Characteristics:**
+   - **Number of transactions**: {number_of_transactions}
+   - **Key participants (`From` and `To`)**: {summary_of_key_participants}
+   - **Common token types**: {list_of_tokens_used}
+   - **Transaction value range**: {min_value} - {max_value}
+   - **Notable patterns**: {any_unique_trends_or_repetitions}
+
+2. **Justification for Clustering:**
+   - Why were these transactions grouped into this cluster?
+   - What differentiates this cluster from others?
+
+3. **Additional Observations by LLM:**
+   - Any other patterns or anomalies detected in this cluster.
 """
+
 
 
 def summarize_clustered_data(input_dir="clustered_csv", output_dir="clusterSummary"):
