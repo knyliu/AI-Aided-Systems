@@ -7,7 +7,7 @@ from llm import get_llm_response
 
 def markdown_to_pdf(markdown_text: str, output_pdf_path: str):
     # 將 Markdown 轉換成 HTML 內容
-    html_body = markdown.markdown(markdown_text)
+    html_body = markdown.markdown(markdown_text, extensions=['tables'])
     
     # 取得當前資料夾中 NotoSansTC-Regular.ttf 的絕對路徑，並轉換成 file:// URL
     current_dir = os.path.abspath(os.path.dirname(__file__))
